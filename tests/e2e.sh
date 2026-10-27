@@ -23,8 +23,8 @@ age-keygen -y "$WORK/key.txt" > "$BACKUP_DIR/recipient.txt"
 echo "== 元の DB を作る"
 docker run -d --name "$SRC" -e POSTGRES_HOST_AUTH_METHOD=trust -p "127.0.0.1:$PORT:5432" \
     postgres:17-alpine >/dev/null
-for _ in $(seq 1 30); do docker exec "$SRC" pg_isready -U postgres -q && break; sleep 1; done
-sleep 2
+# TCP で確かめる(理由は server/restore_test.sh の同じ箇所)
+for _ in $(seq 1 30); do docker exec "$SRC" pg_isready -h 127.0.0.1 -U postgres -q && break; sleep 1; done
 docker exec "$SRC" psql -U postgres -q -c "
   create table works (id serial primary key, title text not null);
   create table sales (id serial primary key, work_id int references works(id), qty int);

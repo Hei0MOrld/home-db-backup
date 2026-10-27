@@ -30,7 +30,9 @@ fi
 docker rm -f "$C" >/dev/null 2>&1
 docker run -d --name "$C" -e POSTGRES_HOST_AUTH_METHOD=trust "$IMAGE" >/dev/null
 for _ in $(seq 1 30); do
-    docker exec "$C" pg_isready -U postgres -q && break
+    # TCP で確かめる。公式イメージは初期化中に unix ソケットだけの仮サーバーを一度立てて止めるので、
+    # ソケットで確かめるとその仮サーバーを「準備完了」と誤認する(CI で createdb が失敗した)
+    docker exec "$C" pg_isready -h 127.0.0.1 -U postgres -q && break
     sleep 1
 done
 
