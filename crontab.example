@@ -1,0 +1,4 @@
+# 毎晩 3:30 にバックアップ
+30 3 * * * /home/backup/home-db-backup/server/backup.sh >> /home/backup/backup/backup.log 2>&1
+# 毎朝 7:10 にメインPCを起こす(任意。MAIN_PC_MAC などは環境変数か、スクリプト冒頭の既定値を書き換え)
+10 7 * * * MAIN_PC_MAC=AA:BB:CC:DD:EE:FF BROADCAST_IP=192.168.1.255 /home/backup/home-db-backup/server/wake_main_pc.sh >> /home/backup/wake.log 2>&1

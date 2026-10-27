@@ -1,0 +1,4 @@
+# 名前|接続URL|pg_dump の追加引数(任意)
+# Supabase は Session pooler の URL(IPv4 で届く)を使う。パスワード入りなので chmod 600 にすること
+# myapp|postgresql://postgres.xxxxxxxx:PASSWORD@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres|--schema=public
+# shop|postgresql://user:PASSWORD@ep-xxxx.ap-southeast-1.aws.neon.tech/neondb?sslmode=require

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: shellcheck server/*.sh tests/*.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: unit tests
+        run: |
+          pip install pytest
+          pytest -q tests
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install age
+        run: sudo apt-get update && sudo apt-get install -y age
+      - name: backup → restore round trip
+        run: bash tests/e2e.sh
